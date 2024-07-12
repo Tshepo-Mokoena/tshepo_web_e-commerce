@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="bg_load" *ngIf="loading">
+        <img class="loader_animation" src="assets/img/loader.gif" alt="">
+    </div>
+</div>
+<div class="row content-row mt-big" *ngIf="!loading">
+    <div class="col-xl-8 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+        <div class="bg-white block h-100">
+            <div class="row">
+                <div class="col-md-8 col-sm-12">
+                    <h2 class="block-title d-inline-block"><i class="fa fa-user"></i> Account Details</h2>
+                </div>   
+                <div class="col-md-4 col-sm-12">
+                    <a class="btn" [routerLink]="['/change-password']">Change Password</a>
+                </div>  
+                <div class="col-md-12 col-sm-12" >
+                    <p class="alert alert-danger" *ngIf="failed">Oops! Something went wrong, try again <i class="fa fa-times"></i></p>
+                    <p class="alert alert-success"*ngIf="updated">Successfully Updated<i class="fa fa-warning"></i></p>
+                </div>                  
+            </div>
+            <hr>
+            <form #form="ngForm" (ngSubmit)="updateAccount()" class="form-signin">
+  
+                <div class="form-label-group">
+                    <input name="firstName" #firstName="ngModel" [(ngModel)]="account.firstName" type="text" id="inputName" class="form-control" placeholder="First Name" 
+                    minlength="2" maxlength="100"
+                    required autofocus>
+                    <label for="inputName">First Name</label>
+                    <div class="alert alert-danger" *ngIf="firstName.touched && !firstName.valid">
+                      First Name Required.
+                    </div>
+                </div>
+  
+                <div class="form-label-group">
+                    <input name="lastName" #lastName="ngModel" [(ngModel)]="account.lastName" type="text" id="inputName" class="form-control" placeholder="Last Name" 
+                    minlength="2" maxlength="100"
+                    required autofocus>
+                    <label for="inputName">Last Name</label>
+                    <div class="alert alert-danger" *ngIf="lastName.touched && !lastName.valid">
+                      Last Name Required.
+                    </div>
+                </div>
+  
+                <div class="form-label-group">
+                    <input name="email" #email="ngModel" [(ngModel)]="account.email" type="email" id="inputEmail" class="form-control" placeholder="Email address" 
+                    pattern="^[a-zA-Z]+([.-]?[a-zA-Z0-9]+)*@([a-zA-Z]+([.-]?[a-zA-Z]))[.]{1}[a-zA-Z]{2,}$"
+                    required autofocus>
+                    <label for="inputEmail">Email address</label>
+                    <div class="alert alert-danger" *ngIf="email.touched && !email.valid">
+                      Email Required.
+                    </div>
+                </div>
+  
+                <div class="form-label-group">
+                    <input name="phone" #phone="ngModel" [(ngModel)]="account.phone" type="text" id="inputPhone" class="form-control" placeholder="Phone" 
+                    pattern="(0)[0-9 ]{9}"
+                    required autofocus>
+                    <label for="inputPhone">Phone</label>
+                    <div class="alert alert-danger" *ngIf="phone.touched && !phone.valid">
+                      Phone Required.
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Update</button>                
+  
+            </form>
+  
+        </div>
+    </div>
+</div>

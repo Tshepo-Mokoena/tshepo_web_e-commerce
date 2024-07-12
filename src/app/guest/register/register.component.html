@@ -1,0 +1,83 @@
+<!-- row -->
+<div class="row">
+    <div class="bg_load" *ngIf="loading">
+        <img class="loader_animation" src="assets/img/loader.gif" alt="">
+    </div>
+</div>
+<div class="row content-row mt-big">
+    <div class="col-xl-5 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+        <div class="bg-white block h-100">
+            <div class="row">
+                <div class="col-md-8 col-sm-12">
+                    <h2 class="block-title d-inline-block"><i class="fa fa-user-circle"></i> Register</h2>
+                </div> 
+                <div class="col-md-12 col-sm-12">
+                    <p class="text-color">Register account</p>
+                </div>     
+                <div class="col-md-12 col-sm-12" >
+                    <p class="alert alert-danger"*ngIf="failed">Oops! something went wrong <i class="fa fa-warning"></i></p>
+                    <p class="alert alert-warning"*ngIf="conflict">Email Exists. <i class="fa fa-warning"></i></p>
+                </div>      
+            </div>
+            <hr>
+            <form #form="ngForm" (ngSubmit)="register()"  class="form-signin">
+  
+                <div class="form-label-group">
+                    <input name="firstName" #firstName="ngModel" [(ngModel)]="account.firstName" type="text" id="inputName" class="form-control" placeholder="First Name" 
+                    minlength="2" maxlength="100"
+                    required autofocus>
+                    <label for="inputName">First Name</label>
+                    <div class="alert alert-danger" *ngIf="firstName.touched && !firstName.valid">
+                      First Name Required.
+                    </div>
+                </div>
+  
+                <div class="form-label-group">
+                    <input name="lastName" #lastName="ngModel" [(ngModel)]="account.lastName" type="text" id="inputName" class="form-control" placeholder="Last Name" 
+                    minlength="2" maxlength="100"
+                    required autofocus>
+                    <label for="inputName">Last Name</label>
+                    <div class="alert alert-danger" *ngIf="lastName.touched && !lastName.valid">
+                      Last Name Required.
+                    </div>
+                </div>
+  
+                <div class="form-label-group">
+                    <input name="email" #email="ngModel" [(ngModel)]="account.email" type="email" id="inputEmail" class="form-control" placeholder="Email address" 
+                    pattern="^[a-zA-Z]+([.-]?[a-zA-Z0-9]+)*@([a-zA-Z]+([.-]?[a-zA-Z]))[.]{1}[a-zA-Z]{2,}$"
+                    required autofocus>
+                    <label for="inputEmail">Email address</label>
+                    <div class="alert alert-danger" *ngIf="email.touched && !email.valid">
+                      Email Required.
+                    </div>
+                </div>
+  
+                <div class="form-label-group">
+                    <input name="phone" #phone="ngModel" [(ngModel)]="account.phone" type="text" id="inputPhone" class="form-control" placeholder="Phone" 
+                    pattern="(0)[0-9 ]{9}"
+                    required autofocus>
+                    <label for="inputPhone">Phone</label>
+                    <div class="alert alert-danger" *ngIf="phone.touched && !phone.valid">
+                      Phone Required.
+                    </div>
+                </div>
+
+                <div class="form-label-group">
+                    <input name="password" #password="ngModel" [(ngModel)]="account.password"  type="password" id="inputNewPassword" class="form-control" placeholder="New Password" 
+                    minlength="8"
+                    required autofocus>
+                    <label for="inputNewPassword">New Password</label>
+                    <div class="alert alert-danger" *ngIf="password.touched && !password.valid">
+                        Password Required, Should be atleast 8 characters.
+                    </div>
+                </div>
+  
+                <button class="btn btn-primary btn-block" [disabled]="!form.valid" type="submit">Sign Up</button>
+  
+            </form>
+
+            <a [routerLink]="['/login']" class="text-color">Aready have an account</a>
+  
+        </div>
+    </div>
+</div>

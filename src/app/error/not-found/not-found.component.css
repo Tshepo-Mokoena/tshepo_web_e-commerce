@@ -1,0 +1,29 @@
+.error-page
+{  
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;  
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+.btn-primary {
+    display: inline-block;
+    background-color: #f34949;
+    border-color: #f34949;
+    color: #fff;
+    border-radius: 30px;
+    padding: 9px 25px;
+    text-transform: capitalize;
+    -webkit-transition: all 0.3s ease 0s;
+    -moz-transition: all 0.3s ease 0s;
+    -o-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s; }
+.btn-primary:hover {
+    background-color: #e22104;
+    border-color: #e22104;
+    color: #fff; }

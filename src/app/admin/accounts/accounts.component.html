@@ -1,0 +1,90 @@
+<div class="row" *ngIf="loading">
+    <div class="bg_load" >
+        <img class="loader_animation" src="assets/img/loader.gif" alt="">
+    </div>
+</div>
+
+
+
+<div class="row content-row mt-big">
+    <div class="col-xl-12 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+        <div class="bg-white block h-100">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <p class="alert alert-danger" *ngIf="failed">Oops! Something went wrong, try again <i class="fa fa-times"></i></p>
+                </div>
+            </div>  
+            <div class="row">
+                <div class="col-md-8 col-sm-12">
+                    <h2 class="block-title d-inline-block">Accounts <i class="fa fa-users"></i></h2>
+                </div>
+                <div class="col-md-4 col-sm-12 text-right">
+                    <a (click)="getAccounts()" class="btn btn-small btn-primary">Refresh Accounts <i class="fa fa-refresh"></i></a>
+                </div>                
+            </div> 
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="side_bar_search">
+                        <form #searchForm="ngForm" (ngSubmit)="getAccounts(searchForm.value.name)" class="input-group stylish-input-group">
+                            <input type="text" class="form-control" placeholder="Search" name="name" ngModel>
+                            <span class="input-group-addon">
+                                <button type="submit"><i class="fa fa-search btn" aria-hidden="true"></i></button>
+                            </span>
+                        </form>
+                    </div>
+                </div>
+            </div>           
+            <div class="table-responsive">
+                <table class="table table-hover table-striped tm-table-striped-even mt-3">
+                    <thead>
+                        <tr class="color">
+                            <th scope="col">Email</th>
+                            <th scope="col">First Name:</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col" class="text-center">Active</th>
+                            <th scope="col" class="text-center">Locked</th>
+                            <th scope="col">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let account of accounts">
+                            <td class="col-sm-6 col-md-4">
+                                <a (click)="viewAccount(account.email)">{{account.email}}</a>
+                            </td>
+                            <td class="col-sm-2 col-md-2"  (click)="viewAccount(account.email)">
+                                {{account.firstName}}
+                            </td>
+                            <td class="col-sm-1 col-md-1">
+                                <a (click)="viewAccount(account.email)">{{account.lastName}}</a>
+                            </td>
+                            <td class="col-sm-1 col-md-1" style="text-align: center">
+                                <a class="btn" (click)="viewAccount(account.email)">{{account.active}}</a>
+                            </td>
+                            <td class="col-sm-1 col-md-1 text-center">
+                                <a class="btn" (click)="viewAccount(account.email)">{{account.locked}}</a>
+                            </td>
+                            <td class="col-sm-1 col-md-1">
+                                <a type="button" class="btn">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div *ngIf="page.content.length > 0"  class="tm-table-mt tm-table-actions-row">
+                    <span class="tm-pagination-label">Page</span>
+                    <nav aria-label="Page navigation" class="d-inline-block">
+                        <ul class="pagination tm-pagination">
+                            <li class="page-item" [ngClass]="0 == (currentPage$ | async) ? ' disabled' : ''"><a class="page-link" (click)="goToNextOrPreviousPage('backward', searchForm.value.name)" >&laquo;</a></li>
+                            <li *ngFor="let pageNumber of [].constructor(page.totalPages); let i = index;" class="page-item" [ngClass]="i == (currentPage$ | async) ? ' active' : ''"><a class="page-link" (click)="getAccounts(searchForm.value.name, i)">{{ i+1 }}</a></li>
+                            <li class="page-item" [ngClass]="(page.totalPages - 1) == (currentPage$ | async) ? ' disabled' : ''"><a class="page-link" (click)="goToNextOrPreviousPage('forward', searchForm.value.name)" >&raquo;</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>           
+            
+        </div>
+    </div>
+</div>
+

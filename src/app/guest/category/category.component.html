@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="bg_load" *ngIf="loading">
+        <img class="loader_animation" src="assets/img/loader.gif" alt="">
+    </div>
+</div>
+
+<div class="row content-row mt-bigcontent-row mt-big">
+    <div class="col-xl-12 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+        <div class="products">
+            <div class="row posts">
+                <div class="col-md-4 col-sm-12">
+                    <div class="section-heading">
+                        <h1 class="title">Products</h1>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-12">
+                    <div class="tags">
+                        <ul *ngFor="let category of categoryList">
+                            <li [ngClass]="category.name == categoryName ? ' active' : ''"><a (click)="getCategory(category.name)">{{category.name}}</a></li>
+                        </ul>
+                    </div>
+                </div>                
+            </div> 
+            <div class="row posts">       
+                <div id="1" class="item new col-md-4" *ngFor="let product of productList">
+                    <a (click)="getProduct(product.productId)">
+                        <div class="featured-item">
+                            <img src="{{product.productImageURL}}" alt="Image">
+                            <h4>{{product.name}}</h4>
+                            <h6>{{product.price | currency:"ZAR":"symbol"}}</h6>
+                        </div>
+                    </a>
+                  </div>        
+            </div>
+            <div *ngIf="page.content.length > 0"  class="tm-table-mt tm-table-actions-row">
+                <div class="tm-table-actions-col-right">
+                    <nav aria-label="Page navigation" class="d-inline-block">
+                        <ul class="pagination tm-pagination">
+                            <li class="page-item" [ngClass]="0 == (currentPage$ | async) ? ' disabled' : ''"><a class="page-link" (click)="goToNextOrPreviousPage('backward')" >&laquo;</a></li>
+                            <li *ngFor="let pageNumber of [].constructor(page.totalPages); let i = index;" class="page-item" [ngClass]="i == (currentPage$ | async) ? ' active' : ''"><a class="page-link" (click)="getProducts(i)">{{ i+1 }}</a></li>
+                            <li class="page-item" [ngClass]="(page.totalPages - 1) == (currentPage$ | async) ? ' disabled' : ''"><a class="page-link" (click)="goToNextOrPreviousPage('forward')" >&raquo;</a></li>                                                        
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

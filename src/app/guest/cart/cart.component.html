@@ -1,0 +1,103 @@
+<!-- row -->
+<div class="row">
+    <div class="bg_load" *ngIf="loading">
+        <img class="loader_animation" src="assets/img/loader.gif" alt="">
+    </div>
+</div>
+<div class="row content-row mt-big">
+    <div class="col-xl-12 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+        <div class="bg-white block h-100">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <p class="alert alert-danger" *ngIf="failed">Oops! Something went wrong, try again <i class="fa fa-times"></i></p>
+                    <p class="alert alert-success"*ngIf="updated">Successfully Updated <i class="fa fa-warning"></i></p>
+                    <p class="alert alert-success"*ngIf="deleted">Removed from Cart <i class="fa fa-trash"></i></p>
+                    <p class="alert alert-danger"*ngIf="!isNumber">Quantity should be a number <i class="fa fa-warning"></i></p>
+                </div>
+            </div>  
+            <div class="row">
+                <div class="col-md-8 col-sm-12">
+                    <h2 class="block-title d-inline-block">Shopping Cart <i class="fa fa-shopping-cart"></i></h2>
+                </div>
+                <div class="col-md-4 col-sm-12 text-right">
+                    <a (click)="refreshCart()" class="btn btn-small btn-primary">Refresh Cart <i class="fa fa-refresh"></i></a>
+                </div>                
+            </div>            
+            <div class="table-responsive">
+                <table class="table table-hover table-striped tm-table-striped-even mt-3">
+                    <thead>
+                        <tr class="color">
+                            <th scope="col">Product</th>
+                            <th scope="col" class="text-center">Qty</th>
+                            <th scope="col" class="text-center">Price</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let cartItem of cart.cartItems">
+                            <td class="col-sm-8 col-md-6">
+                                <div class="media">                                    
+                                    <a class="thumbnail pull-left" [routerLink]="['/product', cartItem.product.productId]">
+                                        <img class="media-object" src="{{cartItem.product.productImageURL}}" alt="">
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">{{cartItem.product.name}}</h4>
+                                        <span>Status: </span><span *ngIf="cartItem.product.qty > cartItem.qty" class="text-success">{{cartItem.product.qty}} In Stock</span>
+                                        <span *ngIf="cartItem.product.qty < cartItem.qty" class="text-danger">{{cartItem.product.qty}} Out of Stock</span>
+                                    </div>                                    
+                                </div>
+                            </td>
+                            <td class="col-sm-1 col-md-1" style="text-align: center">
+                                <input type="number" class="qty" name="quantity" #quantity="ngModel" [(ngModel)]="cartItem.qty" value="{{cartItem.qty}}"  pattern="^-?(0|[1-9]\d*)?$">
+                                <a class="btn" *ngIf="quantity.touched" (click)="updateQty(cartItem.qty, cartItem.product.productId)">Update</a>
+                            </td>
+                            <td class="col-sm-1 col-md-1" style="text-align: center">
+                                <p class="price_table">{{cartItem.product.price | currency:"ZAR":"symbol"}}</p>
+                            </td>
+                            <td class="col-sm-1 col-md-1 text-center">
+                                <p class="price_table">{{cartItem.subtotal | currency:"ZAR":"symbol"}}</p>
+                            </td>
+                            <td class="col-sm-1 col-md-1">
+                                <a type="button" class="btn" (click)="removeFromCart(cartItem.product.productId)">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>                        
+                    </tbody>
+                </table>
+            </div>           
+            
+        </div>
+    </div>
+    <div class="tm-col tm-col-big">
+        <div class="bg-white block h-100">
+            <h2 class="block-title"><i class="fa fa-truck"></i> Cart Totals</h2>
+            <hr>
+            <table>
+                <tbody>                    
+                    <tr>
+                        <td>
+                            <h6>Subtotal:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6>{{cart.total | currency:"ZAR":"symbol"}}</h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>Order Total:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6>{{cart.total | currency:"ZAR":"symbol"}}</h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><a class="btn" [routerLink]="['/products']"><i class="fa fa-shopping-cart"></i>Continue Shopping</a></td>
+                        <td *ngIf="cart.total > 0" ><a class="btn" [routerLink]="['/checkout']"><i class="fa fa-credit-card"></i> Checkout</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+    </div>
+</div>

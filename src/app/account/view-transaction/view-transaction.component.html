@@ -1,0 +1,237 @@
+<div class="row" *ngIf="loading">
+    <div class="bg_load" >
+        <img class="loader_animation" src="assets/img/loader.gif" alt="">
+    </div>
+</div>
+<!--ROW-->
+<div class="row content-row mt-big">
+    <!--Personal Details-->
+    <div class="tm-col tm-col-big">
+        <div class="bg-white block h-100">
+            <h2 class="block-title"><i class="fa fa-user"></i> Personal Details <a class="btn" [routerLink]="['/profile']"><i class="fa fa-pencil"></i></a></h2>
+            <hr>
+            <table>
+                <tbody>                                       
+                    <tr>
+                        <td>
+                            <h6>Account No:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6>{{order.account.accountId}}</h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>First Name:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6>{{order.account.firstName}}</h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>Last Name:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6>{{order.account.lastName}}</h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>Email:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6>{{order.account.email}}</h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>Cellphone:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6>{{order.account.phone}}</h6>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+    </div>
+    <div class="tm-col tm-col-big">
+        <div class="bg-white block h-100">
+            <h2 class="block-title"><i class="fa fa-home"></i> Address Details <a class="btn" [routerLink]="['/profile']"><i class="fa fa-pencil"></i></a></h2>
+            <hr>
+            <table>
+                <tbody>                                       
+                    <tr>
+                        <td>
+                            <h6>Street:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>Town:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>City:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>Province:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>Country:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6></h6>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+    </div>
+    <div class="tm-col tm-col-big">
+        <div class="bg-white block h-100">
+            <h2 class="block-title"><i class="fa fa-credit-card"></i> Payment Details <a class="btn" [routerLink]="['/profile']"><i class="fa fa-pencil"></i></a></h2>
+            <hr>
+            <table>
+                <tbody>                                       
+                    <tr>
+                        <td>
+                            <h6>Card No:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>CVC:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>Card Type:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>Expiry Date:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6></h6>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+    </div>
+    <!--End of Details-->
+
+    <div class="col-xl-12 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+        <div class="bg-white block h-100">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="col-md-12 col-sm-12">
+                        <p class="alert alert-danger" *ngIf="failed">Oops! Something went wrong, try again <i class="fa fa-times"></i></p>
+                    </div>
+                </div>
+            </div>  
+            <div class="row">
+                <div class="col-md-8 col-sm-12">
+                    <h2 class="block-title">Order <i class="fa fa-truck"></i> #{{orderId}}</h2>
+                </div>
+                <div class="col-md-4 col-sm-12 text-right">
+                    <a class="btn btn-small btn-primary" (click)="getOrder()">Refresh Order <i class="fa fa-refresh"></i></a>
+                </div>                
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover table-striped tm-table-striped-even mt-3">
+                    <thead>
+                        <tr class="color">
+                            <th scope="col">Product</th>
+                            <th scope="col" class="text-center">Qty</th>
+                            <th scope="col" class="text-center">Price</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let orderItem of order.orderItems">
+                            <td class="col-sm-8 col-md-6">
+                                <div class="media">                                    
+                                    <a class="thumbnail pull-left" [routerLink]="['/product', orderItem.product.productId]">
+                                        <img class="media-object" src="{{orderItem.product.productImageURL}}" alt="">
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">{{orderItem.product.name}}</h4>
+                                        <span>Status: </span><span *ngIf="orderItem.product.qty > orderItem.qty" class="text-success">{{orderItem.product.qty}} In Stock</span>
+                                        <span *ngIf="orderItem.product.qty < orderItem.qty" class="text-danger">{{orderItem.product.qty}} Out of Stock</span>
+                                    </div>                                    
+                                </div>
+                            </td>
+                            <td class="col-sm-1 col-md-1" style="text-align: center">
+                                {{orderItem.qty}}
+                            </td>
+                            <td class="col-sm-1 col-md-1" style="text-align: center">
+                                <p class="price_table">{{orderItem.product.price | currency:"ZAR":"symbol"}}</p>
+                            </td>
+                            <td class="col-sm-1 col-md-1 text-center">
+                                <p class="price_table">{{orderItem.subtotal | currency:"ZAR":"symbol"}}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>      
+        </div>
+    </div>
+
+    <div class="tm-col tm-col-big">
+        <div class="bg-white block h-100">
+            <h2 class="block-title"><i class="fa fa-truck"></i> Order Details</h2>
+            <hr>
+            <table>
+                <tbody>                    
+                    <tr>
+                        <td>
+                            <h6>Subtotal:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6>{{order.total | currency:"ZAR":"symbol"}}</h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h6>Order Total:</h6>
+                        </td>
+                        <td class="text-left">
+                            <h6>{{order.total | currency:"ZAR":"symbol"}}</h6>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>        
+    </div>
+</div>

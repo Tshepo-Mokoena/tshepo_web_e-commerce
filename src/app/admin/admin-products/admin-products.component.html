@@ -1,0 +1,191 @@
+
+<!--ROW-->
+<div class="row"  *ngIf="loading">
+    <div class="bg_load">
+        <img class="loader_animation" src="assets/img/loader.gif" alt="">
+    </div>
+</div>
+<div class="row content-row mt-big" *ngIf="!loading">
+    <div class="col-xl-10 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+        <div class="bg-white block h-100">  
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <p class="alert alert-danger" *ngIf="failed">Oops! Something went wrong, try again <i class="fa fa-times"></i></p>
+                    <p class="alert alert-success" *ngIf="deleted">Successfully Deleted <i class="fa fa-check"></i></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-sm-12">
+                    <h2 class="block-title d-inline-block">Products</h2>
+                </div>
+                <div class="col-md-4 col-sm-12 text-right">
+                    <a [routerLink]="['/add-product']" class="btn btn-small btn-primary">Add New Product</a>
+                </div>                
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="side_bar_search">
+                        <form #searchForm="ngForm" (ngSubmit)="getProducts(searchForm.value.name)" class="input-group stylish-input-group">
+                            <input type="text" class="form-control" placeholder="Search" name="name" ngModel>
+                            <span class="input-group-addon">
+                                <button type="submit"><i class="fa fa-search btn" aria-hidden="true"></i></button>
+                            </span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-striped tm-table-striped-even mt-3">
+                    <thead>
+                        <tr class="color">
+                            <th scope="col">Product</th>
+                            <th scope="col" class="text-center">Qty</th>
+                            <th scope="col" class="text-center">Active</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of productList">
+                            <td class="col-sm-8 col-md-6">
+                                <div class="media">                                    
+                                    <a class="thumbnail pull-left" (click)="editProduct(product.productId)">
+                                        <img class="media-object" src="{{product.productImageURL}}" alt="">
+                                    </a>
+                                    <div class="media-body">
+                                        <h4 class="media-heading" (click)="editProduct(product.productId)">{{product.name}}</h4>
+                                        <span>Status: </span><span class="text-success">In Stock</span>
+                                    </div>                                    
+                                </div>
+                            </td>
+                            <td class="col-sm-1 col-md-1" style="text-align: center">
+                                {{product.qty}}
+                            </td>
+                            <td class="col-sm-1 col-md-1" style="text-align: center">
+                                <a class="btn">{{product.active}}</a>
+                            </td>
+                            <td class="col-sm-1 col-md-1 text-center">
+                                <p class="price_table">{{product.price | currency:"ZAR":"symbol"}}</p>
+                            </td>
+                            <td class="col-sm-1 col-md-1">
+                                <a type="button" class="btn" (click)="deleteNotification(product.productId)">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+
+                <div *ngIf="page.content.length > 0"  class="tm-table-mt tm-table-actions-row">
+                    <span class="tm-pagination-label">Page</span>
+                    <nav aria-label="Page navigation" class="d-inline-block">
+                        <ul class="pagination tm-pagination">
+                            <li class="page-item" [ngClass]="0 == (currentPage$ | async) ? ' disabled' : ''"><a class="page-link" (click)="goToNextOrPreviousPage('backward', searchForm.value.name)" >&laquo;</a></li>
+                            <li *ngFor="let pageNumber of [].constructor(page.totalPages); let i = index;" class="page-item" [ngClass]="i == (currentPage$ | async) ? ' active' : ''"><a class="page-link" (click)="getProducts(searchForm.value.name, i)">{{ i+1 }}</a></li>
+                            <li class="page-item" [ngClass]="(page.totalPages - 1) == (currentPage$ | async) ? ' disabled' : ''"><a class="page-link" (click)="goToNextOrPreviousPage('forward', searchForm.value.name)" >&raquo;</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>          
+        </div>
+    </div>
+
+    <div class="col-xl-2 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+        <div class="bg-white block h-100">
+            <h2 class="block-title d-inline-block">Categories<a class="btn" (click)="addModal()"><i class="fa fa-pencil"></i></a></h2> 
+            <div class="tags">
+                <ul *ngFor="let category of categoryList">
+                    <li><a (click)="editModal(category)">{{category.name}}</a></li>
+                </ul>
+            </div>           
+        </div>
+    </div>
+
+        <!--Modal-->
+        <div *ngIf="add" class="tm-col bg_load">
+            <div class="col-xl-8 col-lg-12 tm-md-12 tm-sm-12 ">
+                <div class="bg-white block h-100">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-12">
+                            <h2 class="block-title d-inline-block"><i class="fa fa-pencil"></i> Add Category</h2>
+                        </div>            
+                        <div class="col-md-4 col-sm-2">
+                            <a class="btn" (click)="closeAddModal()"><i class="fa fa-times"></i></a>
+                        </div>
+                    </div>
+                    <hr>
+                    <form class="form-signin" #form="ngForm" (ngSubmit)="addCategory()">      
+                        <div class="form-label-group">
+                            <input name="name" #name="ngModel" [(ngModel)]="categ.name" type="text" id="inputName" class="form-control text-center" placeholder="Name" 
+                            minlength="2" maxlength="100"
+                            required autofocus>
+                            <label for="inputName">Name</label>
+                            <div class="alert alert-danger" *ngIf="name.touched && !name.valid">
+                                Name Required.
+                            </div>      
+                        </div>                        
+                        <button class="btn btn-primary" [disabled]="!form.valid" type="submit">Save</button>      
+                    </form>       
+                </div>
+            </div>
+        </div>  
+        <!--End of Modal-->
+
+        
+        <!--Modal-->
+        <div *ngIf="edit" class="tm-col bg_load">
+            <div class="col-xl-8 col-lg-12 tm-md-12 tm-sm-12 ">
+                <div class="bg-white block h-100">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-12">
+                            <h2 class="block-title d-inline-block"><i class="fa fa-pencil"></i> Edit Category</h2>
+                        </div>            
+                        <div class="col-md-4 col-sm-2">
+                            <a class="btn" (click)="closeEditModal()"><i class="fa fa-times"></i></a>
+                        </div>
+                    </div>
+                    <hr>
+                    <form class="form-signin" #form="ngForm" (ngSubmit)="editCategory()">      
+                        <div class="form-label-group">
+                            <input name="name" #name="ngModel" [(ngModel)]="categ.name" type="text" id="inputName" class="form-control text-center" placeholder="Name" 
+                            minlength="2" maxlength="100"
+                            required autofocus>
+                            <label for="inputName">Name</label>
+                            <div class="alert alert-danger" *ngIf="name.touched && !name.valid">
+                                Name Required.
+                            </div>      
+                        </div>                        
+                        <button class="btn btn-primary" [disabled]="!form.valid" type="submit">Save</button>      
+                    </form>      
+                    <a class="btn text-center" (click)="deleteCategory(categ.categoryId)"><i class="fa fa-trash"></i></a>      
+                </div>
+            </div>
+        </div>  
+        <!--End of Modal-->
+
+        <!--Modal-->
+        <div *ngIf="open" class="tm-col bg_load">
+            <div class="col-xl-8 col-lg-12 tm-md-12 tm-sm-12 ">
+                <div class="bg-white block h-100">
+                    <div class="row">
+                        <div class="col-xl-8 col-md-4 col-sm-12">
+                            <h2 class="block-title d-inline-block"><i class="fa fa-trash"></i> Delete Product</h2>
+                        </div>                                    
+                        <div class="col-xl-2 col-md-4 col-sm-2">
+                            <a class="btn" (click)="deleteConfirm()">Yes</a>
+                        </div>
+                        <div class="col-xl-2 col-md-4 col-sm-2">
+                            <a class="btn" (click)="deleteCancel()">No</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <!--End of Modal-->
+
+
+
+
+</div>

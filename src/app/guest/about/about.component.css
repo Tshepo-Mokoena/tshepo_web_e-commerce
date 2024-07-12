@@ -1,0 +1,40 @@
+.bg_load {
+	float: left;
+  padding-left: 20px;
+  padding-right: 20px;
+	position: fixed;
+	width: 100%;
+	text-align: center;
+	height: 100%;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.section-heading {margin-top: 80px;margin-bottom: 40px;}
+.section-heading .line-dec {width: 30px;height: 5px;background-color: #ee5057;}
+/* About Us Style */
+.about-page {margin-top: 50px;margin-bottom: 80px;}
+.about-page .right-content h4 {font-size: 17px;font-weight: 700;margin-top: 0px;margin-bottom: 20px;}
+.about-page .left-image img {max-width: 100%;}
+.about-page .right-content span {display: inline-block;margin-left: 8px;}
+.about-page .right-content span a i {
+	transition: all 0.5s;
+	background-color: #aaa;
+	width: 26px;
+	height: 26px;
+	display: inline-block;
+	text-align: center;
+	line-height: 26px;
+	border-radius: 50%;
+	color: #fff;
+	font-size: 12px;
+	margin-right: 5px;
+}
+.about-page .right-content .share {margin-top: 20px;border-top: 1px solid #eee;padding: 15px 0px;}
+.about-page .right-content h6 {font-size: 14px;color: #4a4a4a;font-weight: 400;}
+.about-page .right-content span a:hover i {background-color: #3a8bcd;}
+@media (max-width: 991px) {.about-page .right-content {margin-top: 30px;}}

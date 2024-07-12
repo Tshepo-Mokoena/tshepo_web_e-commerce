@@ -1,0 +1,117 @@
+<!-- row -->
+<div class="row">
+    <div class="bg_load" *ngIf="loading">
+        <img class="loader_animation" src="assets/img/loader.gif" alt="">
+    </div>
+</div>
+<div class="row tm-mt-big">
+    <div class="col-xl-8 col-lg-10 col-md-12 col-sm-12">
+        <div class="bg-white tm-block">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="tm-block-title d-inline-block">Edit Product</h2>
+                </div>
+                <div class="col-12" *ngIf="message">
+                    <p *ngIf="success" class="alert alert-success">{{message}} <i class="fa fa-check"></i></p>
+                    <p *ngIf="!success" class="alert alert-danger">{{message}} <i class="fa fa-times"></i></p>
+                </div>
+            </div>
+            <form class="row mt-4 tm-edit-product-row" #productForm="ngForm" (ngSubmit)="editProduct()"
+                enctype="multipart/form-data">
+                <div class="col-xl-7 col-lg-7 col-md-12">
+                    <div class="tm-edit-product-form" novalidate>
+                        <div class="input-group mb-3">
+                            <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Product
+                                Name
+                            </label>
+                            <input id="name" name="name" #name="ngModel" [(ngModel)]="product.name" type="text"
+                                class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" required minlength="2"
+                                maxlength="100">
+                            <p class="alert alert-danger ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0"
+                                *ngIf="name.touched && !name.valid">
+                                Name should be 2 to 100 characters
+                            </p>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label for="description"
+                                class="col-xl-4 col-lg-4 col-md-4 col-sm-5 mb-2">Description</label>
+                            <textarea name="desc" #desc="ngModel"
+                                class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" rows="3" required
+                                [(ngModel)]="product.desc" required minlength="2" maxlength="1000"></textarea>
+                            <p class="alert alert-danger ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0"
+                                *ngIf="desc.touched && !desc.valid">
+                                Description required </p>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label for="category"
+                                class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
+                            <select multiple class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" id="category"
+                                name="categories" #categories="ngModel" [(ngModel)]="product.categories">
+                                <option value="">Select one</option>
+                                <option *ngFor="let category of categoryList" [ngValue]="category">{{category.name}}
+                                </option>
+                            </select>
+                            <div class="col-md-12 col-sm-12">
+                                <div class="tags">
+                                    <ul *ngFor="let category of product.categories">
+                                        <li><a class="btn">{{category.name}}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label for="category"
+                                class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Active</label>
+                            <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" id="category"
+                                name="active" #active="ngModel" [(ngModel)]="product.active">
+                                <option selected>Select one</option>
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label for="price" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Unit
+                                Price
+                            </label>
+                            <input id="price" name="price" ngModel type="text"
+                                class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" data-large-mode="true"
+                                #price="ngModel" [(ngModel)]="product.price" required pattern="^-?(0|[1-9]\d*)?$">
+                            <p class="alert alert-danger ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0"
+                                *ngIf="price.touched && !price.valid">
+                                Price Required
+                            </p>
+                        </div>
+                        <div class="input-group mb-3">
+                            <label for="qty" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Units In
+                                Stock
+                            </label>
+                            <input id="qty" name="qty" #qty="ngModel" ngModel type="text"
+                                class="form-control validate col-xl-9 col-lg-8 col-md-7 col-sm-7"
+                                [(ngModel)]="product.qty" required pattern="^-?(0|[1-9]\d*)?$">
+                            <p class="alert alert-danger ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0"
+                                *ngIf="qty.touched && !qty.valid">
+                                Quantity Required
+                            </p>
+                        </div>
+                        <!--<p>{{productForm.value | json}}</p>-->
+                        <div class="input-group mb-3">
+                            <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
+                                <button type="submit" class="btn btn-primary" [disabled]="!productForm.valid">Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12 mx-auto mb-4">
+                    <div class="tm-product-img-dummy mx-auto">
+                        <img class="img-fluid mx-auto d-block" *ngIf="url" [src]="url" alt="">
+                        <img class="img-fluid mx-auto d-block" *ngIf="!url" [src]="product.productImageURL" alt="">
+                    </div>
+                    <div class="custom-file mt-3 mb-3">
+                        <input id="fileInput" name="image" type="file" (change)="onChange($event)" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

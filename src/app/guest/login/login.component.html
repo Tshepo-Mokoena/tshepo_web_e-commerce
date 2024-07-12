@@ -1,0 +1,48 @@
+<!-- row -->
+<div class="row">
+    <div class="bg_load" *ngIf="loading">
+        <img class="loader_animation" src="assets/img/loader.gif" alt="">
+    </div>
+</div>
+<div class="row content-row mt-big">
+    <div class="col-xl-5 col-lg-12 tm-md-12 tm-sm-12 tm-col">
+        <div class="bg-white block h-100">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <h2 class="block-title d-inline-block"><i class="fa fa-user-circle"></i> Sign In</h2>
+                </div>      
+                <div class="col-md-12 col-sm-12">
+                    <p class="text-color">Login to account</p>
+                </div>
+                <div class="col-md-12 col-sm-12" >
+                    <p class="alert alert-danger"*ngIf="credentials">password or email incorrect <i class="fa fa-warning"></i></p>
+                </div>      
+            </div>
+            <hr>
+            <form #form="ngForm" (ngSubmit)="login()"  class="form-signin">
+  
+                <div class="form-label-group">
+                    <input name="email" #email="ngModel" [(ngModel)]="account.email" type="email" id="inputEmail" class="form-control" placeholder="Email address" 
+                    pattern="^[a-zA-Z]+([.-]?[a-zA-Z0-9]+)*@([a-zA-Z]+([.-]?[a-zA-Z]))[.]{1}[a-zA-Z]{2,}$"
+                    required autofocus>
+                    <label for="inputEmail">Email address</label>
+                    <div class="alert alert-danger" *ngIf="email.touched && !email.valid">
+                      Email Required.
+                    </div>
+                </div>
+
+                <div class="form-label-group">
+                    <input name="password" #password="ngModel" [(ngModel)]="account.password"  type="password" id="inputNewPassword" class="form-control" placeholder="New Password" required autofocus>
+                    <label for="inputNewPassword">Password</label>
+                </div>
+  
+                <button class="btn btn-primary btn-block" [disabled]="!form.valid" type="submit">Sign In</button>
+  
+            </form>
+
+            <a [routerLink]="['/register']" class="text-color">Register account</a><br>
+            <a [routerLink]="['/forgot-password']" class="text-color">Forgot Password</a>
+  
+        </div>
+    </div>
+</div>

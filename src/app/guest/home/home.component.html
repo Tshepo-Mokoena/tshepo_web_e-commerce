@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="bg_load" *ngIf="loading">
+        <img class="loader_animation" src="assets/img/loader.gif" alt="">
+    </div>
+</div>
+<!-- Banner Starts Here -->
+<div class="banner">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="caption">
+                <h2>Best Perfumes</h2>
+                <div class="line-dec" style="color: #f05462;"></div>
+                <p>We only sell the finest quality Perfumes that are locally and internationaly produced, we keep it
+                    simple and cut through complexity and bring you the best Perfumes locally and from around the world.                    
+                    <br><br>Please tell your friends about Siya Best perfume online shop.
+                </p>
+                <div class="main-button" *ngIf="!currentAccount?.id">
+                    <a [routerLink]="['/register']">Sign Up!</a>
+                </div>
+                <div class="main-button"   *ngIf="currentAccount?.id">
+                    <a [routerLink]="['/register']">Shop Now!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner Ends Here -->
+
+<!-- Featured Starts Here -->
+<div class="featured-items">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="section-heading">
+                <h2 class="section-title text-center">Popular Products</h2>
+                <hr class="hr-line-dec">
+                <a class="btn" [routerLink]="['/products']">More</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Featred Ends Here -->
+<div class="section section-position-relative">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none" class="down-arrow">
+        <polygon fill="#ee5057" points="0,0  100,0  50,60"></polygon>
+    </svg>
+    <div class="featured tm-pt-5 tm-pb-4 container no-gutter" *ngIf="!loading">
+        <div class="row posts">
+            <div id="1" class="item new col-md-4" *ngFor="let product of products">
+                <a (click)="getProduct(product.productId)">
+                    <div class="featured-item">
+                        <img src="{{product.productImageURL}}" alt="Image">
+                        <h4>{{product.name}}</h4>
+                        <h6>{{product.price | currency:"ZAR":"symbol"}}</h6>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
